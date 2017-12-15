@@ -7,17 +7,25 @@ routes.get = (req, res) => {
 }
 
 routes.post = (req, res) => {
-    let obj = req.body
-    if (!store[req.params.postId].comments) {
-        store[req.params.postId].comments = []
+    if (!req.body.text) {
+        return res.status(404).send("Invalid Parameters!")
+    }
+    let obj = {
+        text: req.body.text
     }
     let id = store[req.params.postId].comments.length
     store[req.params.postId].comments.push(obj)
-    res.status(201).send(store[req.params.postId].comments[id])
+    res.status(201).send({id: id})
 }
 
 routes.put = (req, res) => {
-    store[req.params.postId].comments[req.params.commentId] = req.body
+    if (!req.body.text) {
+        return res.status(404).send("Invalid Parameters!")
+    }
+    let obj = {
+        text: req.body.text
+    }
+    store[req.params.postId].comments[req.params.commentId] = obj
     res.status(200).send(store[req.params.postId].comments[req.params.commentId])
 }
 
